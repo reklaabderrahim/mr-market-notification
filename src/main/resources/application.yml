@@ -1,0 +1,79 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /api
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: <>
+    password: <>
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  application:
+    name: notification
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: notification
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  cloud:
+    config:
+      enabled: false
+  config:
+    import: optional:secrets.yml
+  flyway:
+    default-schema: notification
+    schemas: security,notification
+    enabled: true
+    baseline-on-migrate: true
+
+
+springdoc:
+  show-actuator: true
+  use-management-port: true
+  paths-to-match: /v1/**
+
+management:
+  server:
+    port: 9090
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: openapi, swagger-ui, health
+
+logging:
+  pattern:
+    console: "%clr(%date{${LOG_DATEFORMAT_PATTERN}}){faint} %clr(${LOG_LEVEL_PATTERN}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([@project.artifactId@ @project.version@][%thread]){blue} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD}"
+    dateformat: "yyyy-MM-dd HH:mm:ss"
+    level: "%5p"
+    file: "%d{${LOG_DATEFORMAT_PATTERN}} ${LOG_LEVEL_PATTERN} [@project.artifactId@ @project.version@][%thread] --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD}"
+  exception-conversion-word: "-%wEx"
+  charset:
+    file: "utf-8"
+    console: "UTF-8"
+  file:
+    name: "/home/rekla/dev/logging/log"
+  level:
+    org:
+      springframework:
+        security: trace
+      hibernate: info
+    fr:
+      mr_market:
+        mr_notification: debug
