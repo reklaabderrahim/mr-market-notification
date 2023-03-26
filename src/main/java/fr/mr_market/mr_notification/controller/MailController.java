@@ -22,7 +22,7 @@ public class MailController {
     private final MailService mailService;
     @PostMapping("/mailProcessing")
     public ResponseEntity<MailResponse> sendTestReport(@RequestBody MailRequest request) throws MessagingException {
-        final Mail mail = mailService.create(request.recipients(), request.mailType());
+        final Mail mail = mailService.create(request.recipients(), request.mailType(), request.callbackUrl());
         mailService.sendHTMLEmail(mail);
         return new ResponseEntity<>(new MailResponse("Your request was taken under consideration", MailStatus.PENDING), HttpStatus.OK);
     }

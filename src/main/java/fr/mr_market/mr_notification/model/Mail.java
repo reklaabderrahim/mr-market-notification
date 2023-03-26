@@ -43,8 +43,10 @@ public class Mail extends FullBaseEntity implements Serializable {
     private String templateName;
     @Column(name = "content_type")
     private String contentType;
+    @Column(name = "callback_url")
+    private String callbackUrl;
 
-    public static Mail create(String from, Set<String> recipients, String subject, String body, String templateName, MailType mailType) {
+    public static Mail create(String from, Set<String> recipients, String subject, String body, String templateName, MailType mailType, String callbackUrl) {
         Mail mail = new Mail();
         mail.setUuid(UUID.randomUUID());
         mail.setCreateDate(LocalDateTime.now());
@@ -56,6 +58,7 @@ public class Mail extends FullBaseEntity implements Serializable {
         mail.setRecipients(recipients);
         mail.setTemplateName(templateName);
         mail.setType(mailType);
+        mail.setCallbackUrl(callbackUrl);
         return mail;
     }
 

@@ -1,7 +1,7 @@
 server:
   port: 8085
   servlet:
-    context-path: /api
+    context-path: /notification/api
 
 spring:
   mail:
@@ -35,10 +35,9 @@ spring:
   config:
     import: optional:secrets.yml
   flyway:
-    default-schema: notification
-    schemas: security,notification
+    schemas: notification
     enabled: true
-    baseline-on-migrate: true
+    locations: classpath:db/migration
 
 
 springdoc:
@@ -72,7 +71,7 @@ logging:
   level:
     org:
       springframework:
-        security: trace
+        mail: trace
       hibernate: info
     fr:
       mr_market:

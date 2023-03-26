@@ -24,8 +24,8 @@ public class MailFormatter {
         this.velocityEngine = new VelocityEngine(properties);
     }
 
-    public String createContent(MailType mailType) throws IllegalArgumentException {
-        completePlaceHolders(mailType);
+    public String createContent(MailType mailType, String callbackUrl) throws IllegalArgumentException {
+        completePlaceHolders(mailType, callbackUrl);
         final Template templateEngine = velocityEngine.getTemplate("templates/mail-template.html");
         final StringWriter stringWriter = new StringWriter();
         templateEngine.merge(this.velocityContext, stringWriter);
@@ -40,12 +40,12 @@ public class MailFormatter {
         }
     }
 
-    private void completePlaceHolders(MailType mailType) {
+    private void completePlaceHolders(MailType mailType, String callbackUrl) {
         switch (mailType) {
             case ACCOUNT_ACTIVATION -> {
                 velocityContext.put("subject", "Bonjour, Merci pour votre inscription");
                 velocityContext.put("content", "Vous devez cliquer sur le lien ci-dessous pour valider votre inscription.");
-                velocityContext.put("action_link", "http://localhost:4200");
+                velocityContext.put("action_link", callbackUrl);
                 velocityContext.put("action_label", "JE CONFIRME");
             }
             case ACCOUNT_CREATED -> {

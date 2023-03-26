@@ -10,5 +10,5 @@ import java.util.Set;
 public interface MailService
 {
 	void sendHTMLEmail(Mail message) throws MessagingException;
-	Mail create(Set<String> recipients, MailType mailType);
+	Mail create(Set<String> recipients, MailType mailType, String callbackUrl);
 }
