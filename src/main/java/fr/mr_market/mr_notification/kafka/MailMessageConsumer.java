@@ -16,7 +16,7 @@ public class MailMessageConsumer {
 
     private final MailService mailService;
 
-    @KafkaListener(topics = "mail-register", groupId = "register_consumer_group")
+    @KafkaListener(topics = "mail-register")
     public void listen(MailRequest request) throws MessagingException {
         log.debug("Mail message received: {}", request);
         final Mail mail = mailService.create(request.recipients(), request.mailType(), request.callbackUrl());
