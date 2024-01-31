@@ -41,7 +41,7 @@ spring:
   kafka:
     consumer:
       enable-auto-commit: true
-      bootstrap-servers: 192.168.1.12:9092
+      bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
       group-id: register_user_group
       auto-offset-reset: earliest
 #      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
@@ -69,7 +69,7 @@ springdoc:
 
 management:
   server:
-    port: 9093
+    port: 9097
   endpoint:
     health:
       show-details: always
