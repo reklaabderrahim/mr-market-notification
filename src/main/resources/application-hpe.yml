@@ -1,0 +1,100 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /notification/api
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: <>
+    password: <>
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  application:
+    name: notification
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: notification
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  cloud:
+    config:
+      enabled: false
+  config:
+    import: optional:secrets.yml
+  flyway:
+    schemas: notification
+    enabled: true
+    locations: classpath:db/migration
+  kafka:
+    consumer:
+      enable-auto-commit: true
+      bootstrap-servers: 192.168.1.218:9092,192.168.1.22:9092,192.168.1.69:9092
+      group-id: register_user_group
+      auto-offset-reset: earliest
+#      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+#      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: fr.mr_market.mr_notification.kafka.CustomDeserializer
+
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+            value:
+              default:
+                type: fr.mr_market.mr_notification.model.MailRequest
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+
+#json.value.default.type
+
+springdoc:
+  show-actuator: true
+  use-management-port: true
+  paths-to-match: /v1/**
+
+management:
+  server:
+    port: 9097
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: openapi, swagger-ui, health
+
+logging:
+  pattern:
+    console: "%clr(%date{${LOG_DATEFORMAT_PATTERN}}){faint} %clr(${LOG_LEVEL_PATTERN}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([@project.artifactId@ @project.version@][%thread]){blue} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD}"
+    dateformat: "yyyy-MM-dd HH:mm:ss"
+    level: "%5p"
+    file: "%d{${LOG_DATEFORMAT_PATTERN}} ${LOG_LEVEL_PATTERN} [@project.artifactId@ @project.version@][%thread] --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD}"
+  exception-conversion-word: "-%wEx"
+  charset:
+    file: "utf-8"
+    console: "UTF-8"
+  file:
+    name: "/home/rekla/dev/logging/log"
+  level:
+    org:
+      springframework:
+        mail: trace
+      hibernate: info
+    fr:
+      mr_market:
+        mr_notification: debug
