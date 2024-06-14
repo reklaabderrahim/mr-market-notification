@@ -5,32 +5,40 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.5</version>
+        <version>3.3.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>fr.mr-market</groupId>
     <artifactId>mr-market-notification</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>mr-market-notification</name>
     <description>mr-market-notification</description>
     <properties>
-        <java.version>17</java.version>
-        <logback-version>1.2.11</logback-version>
-        <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
-        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-        <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
-        <maven.project.info.reports.plugin.version>3.0.0</maven.project.info.reports.plugin.version>
-        <jib-maven-plugin-version>3.${velocity-tools-generic.version}</jib-maven-plugin-version>
-        <flyway-core.version>9.16.0</flyway-core.version>
+        <java.version>21</java.version>
+        <versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
+        <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
+        <maven.site.plugin.version>4.0.0-M15</maven.site.plugin.version>
+        <maven.project.info.reports.plugin.version>3.5.0</maven.project.info.reports.plugin.version>
+        <flyway-core.version>10.10.0</flyway-core.version>
+        <flyway-database-postgresql.version>10.15.0</flyway-database-postgresql.version>
+        <hibernate-core.version>6.4.0.Final</hibernate-core.version>
+        <jib-maven-plugin-version>3.4.3</jib-maven-plugin-version>
         <velocity-engine-core.version>2.3</velocity-engine-core.version>
         <velocity-tools-generic.version>3.1</velocity-tools-generic.version>
         <greenmail-spring.version>1.6.9</greenmail-spring.version>
-        <jsoup.version>1.15.1</jsoup.version>
+        <jsoup.version>1.17.2</jsoup.version>
+        <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate.orm</groupId>
+                    <artifactId>hibernate-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -52,6 +60,19 @@
         </dependency>
 
         <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>${flyway-database-postgresql.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate-core.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
@@ -66,6 +87,16 @@
             <groupId>org.apache.velocity.tools</groupId>
             <artifactId>velocity-tools-generic</artifactId>
             <version>${velocity-tools-generic.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commons-beanutils</artifactId>
+                    <groupId>commons-beanutils</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -158,7 +189,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.7</version>
+                <version>${maven-resources-plugin.version}</version>
                 <configuration>
                     <delimiters>
                         <delimiter>@</delimiter>
@@ -191,7 +222,7 @@
                         <version>${jib-maven-plugin-version}</version>
                         <configuration>
                             <from>
-                                <image>openjdk:17-alpine</image>
+                                <image>openjdk:21-alpine</image>
                             </from>
                             <to>
                                 <image>registry.hub.docker.com/reklaabderrahim/mr-market-notification</image>
